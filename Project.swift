@@ -2,6 +2,12 @@ import ProjectDescription
 
 let project = Project(
     name: "ExerciseGuide",
+    packages: [
+        .remote(
+            url: "https://github.com/SnapKit/SnapKit.git",
+            requirement: .upToNextMajor(from: "5.0.1")
+        )
+    ],
     targets: [
         .target(
             name: "ExerciseGuide",
@@ -26,7 +32,9 @@ let project = Project(
             ),
             sources: ["ExerciseGuide/Sources/**"],
             resources: ["ExerciseGuide/Resources/**"],
-            dependencies: []
+            dependencies: [
+                .package(product: "SnapKit"),
+            ]
         ),
         .target(
             name: "ExerciseGuideTests",
