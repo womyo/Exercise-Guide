@@ -21,16 +21,19 @@ final class OpenAPI {
         self.apiKey = apiKey
     }
     
-    func getExerciseGuide() -> AnyPublisher<[Result], Never> {
+    func getExerciseGuide(_ age: String?, _ exercise: String?, _ level: String?) -> AnyPublisher<[Result], Never> {
         let urlString = "\(baseURL)/TODZ_VDO_TRNG_GUIDE_I"
         var components = URLComponents(string: urlString)!
         components.queryItems = [
             URLQueryItem(name: "serviceKey", value: apiKey),
             URLQueryItem(name: "pageNo", value: "1"),
-            URLQueryItem(name: "numOfRows", value: "10"),
-            URLQueryItem(name: "resultType", value: "json")
+            URLQueryItem(name: "numOfRows", value: "1000"),
+            URLQueryItem(name: "resultType", value: "json"),
+            URLQueryItem(name: "aggrp_nm", value: age),
+            URLQueryItem(name: "ftns_fctr_nm", value: exercise),
+            URLQueryItem(name: "ftns_lvl_nm", value: level),
         ]
-        
+    
         guard let url = components.url else {
             fatalError("Invalid URL")
         }
@@ -46,7 +49,16 @@ final class OpenAPI {
             .map { result -> [Result] in
                 let items = result.response.body.items.item
                 
-                return items
+                var files = Set<String>()
+                return items.filter { item in
+                    files.insert(item.file_nm).inserted
+//                    if files.contains(item.file_nm) {
+//                        return false
+//                    } else {
+//                        files.insert(item.file_nm)
+//                        return true
+//                    }
+                }
             }
             .replaceError(with: [])
             .eraseToAnyPublisher()

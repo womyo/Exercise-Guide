@@ -16,8 +16,8 @@ final class ExerciseGuideViewModel {
         self.usecase = usecase
     }
     
-    func fetchExerciseGuide() {
-        usecase.getExerciseGuide()
+    func fetchExerciseGuide(age: String?, exercise: String?, level: String?) {
+        usecase.getExerciseGuide(age, exercise, level)
             .receive(on: DispatchQueue.main)
             .assign(to: &$exerciseGuides)
     }

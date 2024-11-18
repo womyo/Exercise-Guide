@@ -6,6 +6,10 @@ let project = Project(
         .remote(
             url: "https://github.com/SnapKit/SnapKit.git",
             requirement: .upToNextMajor(from: "5.0.1")
+        ),
+        .remote(
+            url: "https://github.com/onevcat/Kingfisher.git",
+            requirement: .upToNextMajor(from: "8.0.0")
         )
     ],
     targets: [
@@ -16,6 +20,12 @@ let project = Project(
             bundleId: "io.tuist.ExerciseGuide",
             infoPlist: .extendingDefault(
                 with: [
+                    "API_KEY": "$(API_KEY)",
+                    "BASE_URL": "$(BASE_URL)",
+                    "NSAppTransportSecurity": [
+                        "NSAllowsArbitraryLoads": true
+                    ],
+                    "UIUserInterfaceStyle": "Dark",
                     "UILaunchStoryboardName": "LaunchScreen.storyboard",
                     "UIApplicationSceneManifest": [
                         "UIApplicationSupportsMultipleScenes": false,
@@ -34,6 +44,7 @@ let project = Project(
             resources: ["ExerciseGuide/Resources/**"],
             dependencies: [
                 .package(product: "SnapKit"),
+                .package(product: "Kingfisher"),
             ]
         ),
         .target(
